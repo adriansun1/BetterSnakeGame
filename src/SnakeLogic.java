@@ -21,6 +21,8 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
     //[delay] changes update speed. default is 100.
     protected int delay = 100;
     private long mouseTime = 0;
+    MovingMachine vehicle;
+    Random rand = new Random();
 
     //snake and mouse coordinates and hard limits
     protected final int MOUSELIMIT = 4;
@@ -39,6 +41,14 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
     private int mouseDelayTime = 0;
     private int mouseSpawnPercentage = 50;
     private int mouseMovePercentage = 50;
+
+    //car delay time
+    //[carDelay] changes rate that the car is summoned. default 500
+    protected int carDelayTime = 0;
+    protected int carDelay = 150;
+    protected int carWarningTime = 120;
+    protected boolean carWarning = false;
+    protected int leftOrRight;
 
     //snake movement and facing direction
     private boolean north = false;
@@ -64,6 +74,9 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
     private ImageIcon southMouth1;
     private ImageIcon westMouth1;
     private ImageIcon snakeBody;
+    private ImageIcon vacuum;
+    private ImageIcon car;
+    private ImageIcon deathSign;
 
     public SnakeLogic(World world) {
         setFocusable(true);
@@ -90,6 +103,9 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
             westMouth = new ImageIcon("C:\\Users\\Adrian\\Desktop\\Programming\\Github\\BetterPrettySnake\\BetterSnakeGame\\src\\assets\\westMouth.png");
             westMouth1 = new ImageIcon("C:\\Users\\Adrian\\Desktop\\Programming\\Github\\BetterPrettySnake\\BetterSnakeGame\\src\\assets\\westMouth1.png");
             snakeBody = new ImageIcon("C:\\Users\\Adrian\\Desktop\\Programming\\Github\\BetterPrettySnake\\BetterSnakeGame\\src\\assets\\snakeBody.png");
+            car = new ImageIcon("C:\\Users\\Adrian\\Desktop\\Programming\\Github\\BetterPrettySnake\\BetterSnakeGame\\src\\assets\\car.png");
+            vacuum = new ImageIcon("C:\\Users\\Adrian\\Desktop\\Programming\\Github\\BetterPrettySnake\\BetterSnakeGame\\src\\assets\\vacuum.png");
+            deathSign = new ImageIcon("C:\\Users\\Adrian\\Desktop\\Programming\\Github\\BetterPrettySnake\\BetterSnakeGame\\src\\assets\\deathSign.png");
 
         } catch (IOException ex) {
             this.setBackground(Color.BLACK);
@@ -99,6 +115,17 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
         timer = new Timer(delay, this);
         timer.start();
         Arrays.fill(mouseMoveState, false);
+
+        // instantiate vehicle
+        // if Kitchen
+        int n = 0;
+        switch (n) {
+            case 0:
+                vehicle = new Car(this);
+                break;
+//                case 1: MovingMachine vehicle = new Vacuum(this);
+        }
+        ;
     }
 
     //multiplies x,y coords in order for painting
@@ -135,7 +162,7 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
 
     //if spot is not occupied by snake or boundaries
     private boolean spotIsValid(int x, int y) {
-        if (x > 0 && x < 27 && y > 0 && y < 26) {
+        if (x > -2 && x < 27 && y > -2 && y < 26) {
             for (int i = 0; i < snakeLength; i++) {
                 if (x == snakeX[i] && y == snakeY[i]) {
                     return false;
@@ -159,7 +186,6 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
     }
 
     protected void mouseSpawn() {
-        Random rand = new Random();
         int x = 1;
         int y = 1;
         do {
@@ -174,7 +200,6 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
 
 
     private void mouseMove(int i) {
-        Random rand = new Random();
         int n = Math.abs(rand.nextInt() % 4);
         switch (n) {
             case 0:
@@ -201,20 +226,25 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
     }
 
     protected boolean eatBehavior(int i) {
-        if(snakeLength<SNAKELIMIT) {
+        if (snakeLength < SNAKELIMIT) {
             mouseX.remove(i);
             mouseY.remove(i);
             mouseNum--;
             growSnake();
+            if (mouseNum == 0) {
+                mouseSpawn();
+            }
             return true;
         }
         return false;
     }
-    protected void growSnake(){
+
+    protected void growSnake() {
         snakeX[snakeLength] = snakeX[snakeLength - 1];
         snakeY[snakeLength] = snakeY[snakeLength - 1];
         snakeLength++;
     }
+
 
     private void endGame() {
         System.out.println("game over");
@@ -270,14 +300,33 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
             }
         }
 
+        //paints warning sign
+        if (carWarning) {
+            if (leftOrRight == 1) {
+                deathSign.paintIcon(this, g, vehicle.calc(2), vehicle.calc(13));
+            } else {
+                deathSign.paintIcon(this, g, vehicle.calc(25), vehicle.calc(13));
+            }
+        }
+
+        //paints car/vacuum
+        //if(background is kitchen)
+        //paint vacuum
+        if (vehicle.exists) {
+            if (vehicle.isVac) {
+                vacuum.paintIcon(this, g, vehicle.calc(vehicle.x), vehicle.calc(vehicle.y));
+            } else {
+                car.paintIcon(this, g, vehicle.calc(vehicle.x), vehicle.calc(vehicle.y));
+            }
+        }
+
+        //else
 
     }
 
     @Override
     @SuppressWarnings("Duplicates")
     public void actionPerformed(ActionEvent e) {
-//        timer.start();
-
         //snake head and body move
         if (north) {
             for (int i = snakeLength - 1; i > -1; i--) {
@@ -323,7 +372,6 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
         //mouse spawn and move
         mouseDelayTime++;
         if (mouseDelayTime == mouseDelay) {
-            Random rand = new Random();
             if (Math.abs(rand.nextInt() % 100) < mouseSpawnPercentage && mouseNum < MOUSELIMIT) {
                 mouseSpawn();
             }
@@ -335,7 +383,6 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
             mouseDelayTime = 0;
         }
 
-
         //eating behavior
         if (mouseX.contains(snakeX[0])) {
             for (int i = 0; i < mouseNum; i++) {
@@ -344,6 +391,39 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
 
                 }
             }
+        }
+
+        //car behavior
+
+        carDelayTime++;
+        if(carDelayTime == carWarningTime) {
+            leftOrRight = Math.abs(rand.nextInt() % 2);
+        }
+        if (carDelayTime > carWarningTime && carDelayTime < 141) {
+            carWarning = true;
+        } else {
+            carWarning = false;
+        }
+
+        if (carDelay == carDelayTime) {
+            switch (leftOrRight) {
+                case 0:
+                    vehicle.spawnLeft();
+                    break;
+                case 1:
+                    vehicle.spawnRight();
+                    break;
+            }
+            carDelayTime = 0;
+        }
+
+        if (vehicle.left) {
+            vehicle.x--;
+        } else if (vehicle.right) {
+            vehicle.x++;
+        }
+        if (vehicle.exists && (vehicle.x == vehicle.spawn2 || vehicle.x == vehicle.spawn1)) {
+            vehicle.despawn();
         }
 
 

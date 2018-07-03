@@ -89,10 +89,12 @@ public class TesterWindow extends JFrame implements ActionListener, Observer {
             }
         }
         if (e.getKeyCode() == KeyEvent.VK_5) {
-
+            //SUMMON CAR/VACUUM LEFT
+            snake.vehicle.spawnLeft();
         }
         if (e.getKeyCode() == KeyEvent.VK_6) {
-
+            //SUMMON CAR/VACUUM RIGHT
+            snake.vehicle.spawnRight();
         }
         if (e.getKeyCode() == KeyEvent.VK_7) {
 
