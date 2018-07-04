@@ -25,7 +25,7 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
     Random rand = new Random();
 
     //snake and mouse coordinates and hard limits
-    protected final int MOUSELIMIT = 4;
+    protected final int MOUSELIMIT = 8;
     protected final int SNAKELIMIT = 50;
     protected int[] snakeX = new int[SNAKELIMIT];
     protected int[] snakeY = new int[SNAKELIMIT];
@@ -49,6 +49,8 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
     protected int carWarningTime = 120;
     protected boolean carWarning = false;
     protected int leftOrRight;
+    protected int[] carHitboxX = new int[8];
+    protected int[] carHitboxY = new int[8];
 
     //snake movement and facing direction
     private boolean north = false;
@@ -93,20 +95,20 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
 //            bgDesert = ImageIO.read(new File("C:\\Users\\Adrian\\Desktop\\Programming\\Github\\BetterPrettySnake\\BetterSnakeGame\\src\\assets\\bgDesert.png"));
 //            bgKitchen = ImageIO.read(new File("C:\\Users\\Adrian\\Desktop\\Programming\\Github\\BetterPrettySnake\\BetterSnakeGame\\src\\assets\\bgKitchen.png"));
 
-            mouseIdle = ImageIO.read(new File(filePath+"mouseIdle.png"));
-            mouseMove = ImageIO.read(new File(filePath+"mouseMove.png"));
-            northMouth = ImageIO.read(new File(filePath+"northMouth.png"));
-            northMouth1 = ImageIO.read(new File(filePath+"northMouth2.png"));
-            eastMouth = ImageIO.read(new File(filePath+"eastMouth.png"));
-            eastMouth1 = ImageIO.read(new File(filePath+"eastMouth2.png"));
-            southMouth = ImageIO.read(new File(filePath+"southMouth.png"));
-            southMouth1 = ImageIO.read(new File(filePath+"southMouth2.png"));
-            westMouth = ImageIO.read(new File(filePath+"westMouth.png"));
-            westMouth1 = ImageIO.read(new File(filePath+"westMouth2.png"));
-            snakeBody = ImageIO.read(new File(filePath+"snakeBody.png"));
-            car = ImageIO.read(new File(filePath+"car.png"));
-            vacuum = ImageIO.read(new File(filePath+"vacuum.png"));
-            deathSign = ImageIO.read(new File(filePath+"deathSign.png"));
+            mouseIdle = ImageIO.read(new File(filePath + "mouseIdle.png"));
+            mouseMove = ImageIO.read(new File(filePath + "mouseMove.png"));
+            northMouth = ImageIO.read(new File(filePath + "northMouth.png"));
+            northMouth1 = ImageIO.read(new File(filePath + "northMouth2.png"));
+            eastMouth = ImageIO.read(new File(filePath + "eastMouth.png"));
+            eastMouth1 = ImageIO.read(new File(filePath + "eastMouth2.png"));
+            southMouth = ImageIO.read(new File(filePath + "southMouth.png"));
+            southMouth1 = ImageIO.read(new File(filePath + "southMouth2.png"));
+            westMouth = ImageIO.read(new File(filePath + "westMouth.png"));
+            westMouth1 = ImageIO.read(new File(filePath + "westMouth2.png"));
+            snakeBody = ImageIO.read(new File(filePath + "snakeBody.png"));
+            car = ImageIO.read(new File(filePath + "car.png"));
+            vacuum = ImageIO.read(new File(filePath + "vacuum.png"));
+            deathSign = ImageIO.read(new File(filePath + "deathSign.png"));
 
         } catch (IOException ex) {
             this.setBackground(Color.BLACK);
@@ -160,7 +162,7 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
         snakeX[i] = snakeX[i - 1];
     }
 
-    //if spot is not occupied by snake or boundaries
+    //if spot is not occupied by snake or boundaries or car
     private boolean spotIsValid(int x, int y) {
         if (x > -2 && x < 27 && y > -2 && y < 26) {
             for (int i = 0; i < snakeLength; i++) {
@@ -173,6 +175,7 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
         return false;
     }
 
+    //check spot is not occupied by mouse
     private boolean mouseSpotIsValid(int x, int y) {
         if (spotIsValid(x, y)) {
             for (int i = 0; i < mouseNum; i++) {
@@ -227,16 +230,20 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
 
     protected boolean eatBehavior(int i) {
         if (snakeLength < SNAKELIMIT) {
-            mouseX.remove(i);
-            mouseY.remove(i);
-            mouseNum--;
             growSnake();
+            mouseDespawn(i);
             if (mouseNum == 0) {
                 mouseSpawn();
             }
             return true;
         }
         return false;
+    }
+
+    protected void mouseDespawn(int i) {
+        mouseX.remove(i);
+        mouseY.remove(i);
+        mouseNum--;
     }
 
     protected void growSnake() {
@@ -303,9 +310,9 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
         //paints warning sign
         if (carWarning) {
             if (leftOrRight == 1) {
-                g.drawImage(deathSign, 34, 309, 66, 341, 0, 0, 32, 32, this);
+                g.drawImage(deathSign, vehicle.calc(4), vehicle.calc(12), vehicle.calc(6), vehicle.calc(14), 0, 0, 32, 32, this);
             } else {
-                g.drawImage(deathSign, 34, 309, 66, 341, 32, 0, 0, 32, this);
+                g.drawImage(deathSign, vehicle.calc(24), vehicle.calc(12), vehicle.calc(22), vehicle.calc(14), 0, 0, 32, 32, this);
             }
         }
 
@@ -314,14 +321,21 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
         //paint vacuum
         if (vehicle.exists) {
             if (vehicle.isVac) {
-                g.drawImage(vacuum, vehicle.calc(vehicle.x), vehicle.calcY(vehicle.y), this);
+                if(vehicle.left){
+                    g.drawImage(vacuum, vehicle.calc(vehicle.x)+100, vehicle.calc(vehicle.y),vehicle.calc(vehicle.x),vehicle.calc(vehicle.y)+70,0,0,100,70, this);
+                }
+                if(vehicle.right){
+                    g.drawImage(vacuum, vehicle.calc(vehicle.x), vehicle.calc(vehicle.y),vehicle.calc(vehicle.x)+100,vehicle.calc(vehicle.y)+70,0,0,100,70, this);
+                }
             } else {
-                g.drawImage(car, vehicle.calc(vehicle.x), vehicle.calcY(vehicle.y), this);
+                if(vehicle.left){
+                    g.drawImage(car, vehicle.calc(vehicle.x)+100, vehicle.calc(vehicle.y),vehicle.calc(vehicle.x),vehicle.calc(vehicle.y)+70,0,0,100,70, this);
+                }
+                if(vehicle.right){
+                    g.drawImage(car, vehicle.calc(vehicle.x), vehicle.calc(vehicle.y),vehicle.calc(vehicle.x)+100,vehicle.calc(vehicle.y)+70,0,0,100,70, this);
+                }
             }
         }
-
-        //else
-
     }
 
     @Override
@@ -369,7 +383,22 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
             }
         }
 
+        //eating behavior
+        if (mouseX.contains(snakeX[0])) {
+            for (int i = 0; i < mouseNum; i++) {
+                if (mouseX.get(i) == snakeX[0] && mouseY.get(i) == snakeY[0]) {
+                    eatBehavior(i);
+
+                }
+            }
+        }
+
         //mouse spawn and move
+        for (int i = 0; i < mouseNum; i++) {
+            if (!spotIsValid(mouseX.get(i), mouseY.get(i))) {
+                mouseDespawn(i);
+            }
+        }
         mouseDelayTime++;
         if (mouseDelayTime == mouseDelay) {
             if (Math.abs(rand.nextInt() % 100) < mouseSpawnPercentage && mouseNum < MOUSELIMIT) {
@@ -381,16 +410,6 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
                 }
             }
             mouseDelayTime = 0;
-        }
-
-        //eating behavior
-        if (mouseX.contains(snakeX[0])) {
-            for (int i = 0; i < mouseNum; i++) {
-                if (mouseX.get(i) == snakeX[0] && mouseY.get(i) == snakeY[0]) {
-                    eatBehavior(i);
-
-                }
-            }
         }
 
         //car behavior

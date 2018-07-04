@@ -42,9 +42,5 @@ public abstract class MovingMachine {
     protected int calc(int n){
         return (n*25);
     }
-    protected int calcY(int n){
-        return (n*25)+10;
-    }
-
 
 }

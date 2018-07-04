@@ -55,6 +55,7 @@ public class TesterWindow extends JFrame implements ActionListener, Observer {
             }
         });
         timer.start();
+        setLocation(700,100);
         setVisible(true);
 
 
