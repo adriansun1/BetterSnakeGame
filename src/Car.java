@@ -1,7 +1,7 @@
 public class Car extends MovingMachine {
     protected boolean isVac = false;
     protected int uproad = 10;
-    protected int downroad = 13;
+    protected int downroad = y;
 
     public Car(SnakeLogic snake) {
         super(snake);

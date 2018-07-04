@@ -63,20 +63,20 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
     private BufferedImage bgKitchen;
 
     // snake and mouse art
-    private ImageIcon mouseIdle;
-    private ImageIcon mouseMove;
-    private ImageIcon northMouth;
-    private ImageIcon eastMouth;
-    private ImageIcon southMouth;
-    private ImageIcon westMouth;
-    private ImageIcon northMouth1;
-    private ImageIcon eastMouth1;
-    private ImageIcon southMouth1;
-    private ImageIcon westMouth1;
-    private ImageIcon snakeBody;
-    private ImageIcon vacuum;
-    private ImageIcon car;
-    private ImageIcon deathSign;
+    private BufferedImage mouseIdle;
+    private BufferedImage mouseMove;
+    private BufferedImage northMouth;
+    private BufferedImage eastMouth;
+    private BufferedImage southMouth;
+    private BufferedImage westMouth;
+    private BufferedImage northMouth1;
+    private BufferedImage eastMouth1;
+    private BufferedImage southMouth1;
+    private BufferedImage westMouth1;
+    private BufferedImage snakeBody;
+    private BufferedImage vacuum;
+    private BufferedImage car;
+    private BufferedImage deathSign;
 
     public SnakeLogic(World world) {
         setFocusable(true);
@@ -88,24 +88,25 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
 
     private void initBoard() {
         try {
-            bgGrass = ImageIO.read(new File("C:\\Users\\Adrian\\Desktop\\Programming\\Github\\BetterPrettySnake\\BetterSnakeGame\\src\\assets\\bgGrass.png"));
+            String filePath = "C:\\Users\\Adrian\\Desktop\\Programming\\Github\\BetterPrettySnake\\BetterSnakeGame\\src\\assets\\";
+            bgGrass = ImageIO.read(new File(filePath + "bgGrass.png"));
 //            bgDesert = ImageIO.read(new File("C:\\Users\\Adrian\\Desktop\\Programming\\Github\\BetterPrettySnake\\BetterSnakeGame\\src\\assets\\bgDesert.png"));
 //            bgKitchen = ImageIO.read(new File("C:\\Users\\Adrian\\Desktop\\Programming\\Github\\BetterPrettySnake\\BetterSnakeGame\\src\\assets\\bgKitchen.png"));
 
-            mouseIdle = new ImageIcon("C:\\Users\\Adrian\\Desktop\\Programming\\Github\\BetterPrettySnake\\BetterSnakeGame\\src\\assets\\mouseIdle.png");
-            mouseMove = new ImageIcon("C:\\Users\\Adrian\\Desktop\\Programming\\Github\\BetterPrettySnake\\BetterSnakeGame\\src\\assets\\mouseMove.png");
-            northMouth = new ImageIcon("C:\\Users\\Adrian\\Desktop\\Programming\\Github\\BetterPrettySnake\\BetterSnakeGame\\src\\assets\\northMouth.png");
-            northMouth1 = new ImageIcon("C:\\Users\\Adrian\\Desktop\\Programming\\Github\\BetterPrettySnake\\BetterSnakeGame\\src\\assets\\northMouth1.png");
-            eastMouth = new ImageIcon("C:\\Users\\Adrian\\Desktop\\Programming\\Github\\BetterPrettySnake\\BetterSnakeGame\\src\\assets\\eastMouth.png");
-            eastMouth1 = new ImageIcon("C:\\Users\\Adrian\\Desktop\\Programming\\Github\\BetterPrettySnake\\BetterSnakeGame\\src\\assets\\eastMouth1.png");
-            southMouth = new ImageIcon("C:\\Users\\Adrian\\Desktop\\Programming\\Github\\BetterPrettySnake\\BetterSnakeGame\\src\\assets\\southMouth.png");
-            southMouth1 = new ImageIcon("C:\\Users\\Adrian\\Desktop\\Programming\\Github\\BetterPrettySnake\\BetterSnakeGame\\src\\assets\\southMouth1.png");
-            westMouth = new ImageIcon("C:\\Users\\Adrian\\Desktop\\Programming\\Github\\BetterPrettySnake\\BetterSnakeGame\\src\\assets\\westMouth.png");
-            westMouth1 = new ImageIcon("C:\\Users\\Adrian\\Desktop\\Programming\\Github\\BetterPrettySnake\\BetterSnakeGame\\src\\assets\\westMouth1.png");
-            snakeBody = new ImageIcon("C:\\Users\\Adrian\\Desktop\\Programming\\Github\\BetterPrettySnake\\BetterSnakeGame\\src\\assets\\snakeBody.png");
-            car = new ImageIcon("C:\\Users\\Adrian\\Desktop\\Programming\\Github\\BetterPrettySnake\\BetterSnakeGame\\src\\assets\\car.png");
-            vacuum = new ImageIcon("C:\\Users\\Adrian\\Desktop\\Programming\\Github\\BetterPrettySnake\\BetterSnakeGame\\src\\assets\\vacuum.png");
-            deathSign = new ImageIcon("C:\\Users\\Adrian\\Desktop\\Programming\\Github\\BetterPrettySnake\\BetterSnakeGame\\src\\assets\\deathSign.png");
+            mouseIdle = ImageIO.read(new File(filePath+"mouseIdle.png"));
+            mouseMove = ImageIO.read(new File(filePath+"mouseMove.png"));
+            northMouth = ImageIO.read(new File(filePath+"northMouth.png"));
+            northMouth1 = ImageIO.read(new File(filePath+"northMouth2.png"));
+            eastMouth = ImageIO.read(new File(filePath+"eastMouth.png"));
+            eastMouth1 = ImageIO.read(new File(filePath+"eastMouth2.png"));
+            southMouth = ImageIO.read(new File(filePath+"southMouth.png"));
+            southMouth1 = ImageIO.read(new File(filePath+"southMouth2.png"));
+            westMouth = ImageIO.read(new File(filePath+"westMouth.png"));
+            westMouth1 = ImageIO.read(new File(filePath+"westMouth2.png"));
+            snakeBody = ImageIO.read(new File(filePath+"snakeBody.png"));
+            car = ImageIO.read(new File(filePath+"car.png"));
+            vacuum = ImageIO.read(new File(filePath+"vacuum.png"));
+            deathSign = ImageIO.read(new File(filePath+"deathSign.png"));
 
         } catch (IOException ex) {
             this.setBackground(Color.BLACK);
@@ -125,7 +126,6 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
                 break;
 //                case 1: MovingMachine vehicle = new Vacuum(this);
         }
-        ;
     }
 
     //multiplies x,y coords in order for painting
@@ -274,38 +274,38 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
         for (int i = 0; i < snakeLength; i++) {
             if (i == 0) {
                 if (north) {
-                    northMouth.paintIcon(this, g, calc('x', i), calc('y', i));
+                    g.drawImage(northMouth, calc('x', i), calc('y', i), this);
                 }
                 if (east) {
-                    eastMouth.paintIcon(this, g, calc('x', i), calc('y', i));
+                    g.drawImage(eastMouth, calc('x', i), calc('y', i), this);
                 }
                 if (west) {
-                    westMouth.paintIcon(this, g, calc('x', i), calc('y', i));
+                    g.drawImage(westMouth, calc('x', i), calc('y', i), this);
                 }
                 if (south) {
-                    southMouth.paintIcon(this, g, calc('x', i), calc('y', i));
+                    g.drawImage(southMouth, calc('x', i), calc('y', i), this);
                 }
             }
             if (i != 0) {
-                snakeBody.paintIcon(this, g, calc('x', i), calc('y', i));
+                g.drawImage(snakeBody, calc('x', i), calc('y', i), this);
             }
         }
 
         //paints mice
         for (int i = 0; i < mouseNum; i++) {
             if (mouseMoveState[i] == true) {
-                mouseMove.paintIcon(this, g, calc('m', i), calc('n', i));
+                g.drawImage(mouseMove, calc('m', i), calc('n', i), this);
             } else {
-                mouseIdle.paintIcon(this, g, calc('m', i), calc('n', i));
+                g.drawImage(mouseIdle, calc('m', i), calc('n', i), this);
             }
         }
 
         //paints warning sign
         if (carWarning) {
             if (leftOrRight == 1) {
-                deathSign.paintIcon(this, g, vehicle.calc(2), vehicle.calc(13));
+                g.drawImage(deathSign, 34, 309, 66, 341, 0, 0, 32, 32, this);
             } else {
-                deathSign.paintIcon(this, g, vehicle.calc(25), vehicle.calc(13));
+                g.drawImage(deathSign, 34, 309, 66, 341, 32, 0, 0, 32, this);
             }
         }
 
@@ -314,9 +314,9 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
         //paint vacuum
         if (vehicle.exists) {
             if (vehicle.isVac) {
-                vacuum.paintIcon(this, g, vehicle.calc(vehicle.x), vehicle.calc(vehicle.y));
+                g.drawImage(vacuum, vehicle.calc(vehicle.x), vehicle.calcY(vehicle.y), this);
             } else {
-                car.paintIcon(this, g, vehicle.calc(vehicle.x), vehicle.calc(vehicle.y));
+                g.drawImage(car, vehicle.calc(vehicle.x), vehicle.calcY(vehicle.y), this);
             }
         }
 
@@ -396,7 +396,7 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
         //car behavior
 
         carDelayTime++;
-        if(carDelayTime == carWarningTime) {
+        if (carDelayTime == carWarningTime) {
             leftOrRight = Math.abs(rand.nextInt() % 2);
         }
         if (carDelayTime > carWarningTime && carDelayTime < 141) {

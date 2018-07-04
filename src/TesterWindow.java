@@ -97,10 +97,16 @@ public class TesterWindow extends JFrame implements ActionListener, Observer {
             snake.vehicle.spawnRight();
         }
         if (e.getKeyCode() == KeyEvent.VK_7) {
+            //place stationary car in center of road
+            snake.vehicle.x = 12;
+            snake.vehicle.y = 12;
+            snake.vehicle.exists = true;
+            snake.vehicle.left = false;
+            snake.vehicle.right = false;
 
         }
         if (e.getKeyCode() == KeyEvent.VK_8) {
-
+            //despawn all
         }
         if (e.getKeyCode() == KeyEvent.VK_9) {
             //KILLS WINDOWS
