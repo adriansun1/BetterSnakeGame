@@ -13,6 +13,11 @@ public abstract class MovingMachine {
     SnakeLogic snake;
     protected boolean exists = false;
     protected boolean isVac;
+    //used for hitboxing and for painting
+    protected int x1;
+    protected int x2;
+    protected int y1;
+    protected int y2;
 
     public MovingMachine(SnakeLogic snake) {
         this.snake = snake;
@@ -39,8 +44,16 @@ public abstract class MovingMachine {
         exists = false;
     }
 
-    protected int calc(int n){
-        return (n*25);
+    protected int calc(int n) {
+        return (n * 25);
     }
+
+    protected void update() {
+            x1 = calc(x);
+            x2 = calc(x)+100;
+            y1 = calc(y);
+            y2 = calc(y) + 70;
+    }
+
 
 }

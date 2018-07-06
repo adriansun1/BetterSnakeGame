@@ -38,10 +38,13 @@ public class TesterWindow extends JFrame implements ActionListener, Observer {
         coordPanel.setPreferredSize(new Dimension(100, 500));
 
         c.add(coordPanel, BorderLayout.EAST);
-        coordPanel.setLayout(new BoxLayout(coordPanel, BoxLayout.PAGE_AXIS));
+        coordPanel.setLayout(new BorderLayout());
         JTextArea coordField = new JTextArea("");
-        coordPanel.add(coordField);
+        coordPanel.add(coordField, BorderLayout.EAST);
         coordField.setEditable(false);
+
+        JTextArea carField = new JTextArea("");
+        c.add(carField, BorderLayout.WEST);
 
         Timer timer = new Timer(100, new ActionListener() {
             @Override
@@ -51,11 +54,18 @@ public class TesterWindow extends JFrame implements ActionListener, Observer {
                 for (int i = 0; i < snake.mouseNum; i++) {
                     coordField.append("Mouse" + (i + 1) + ": (" + snake.mouseX.get(i) + ", " + snake.mouseY.get(i) + ")\n");
                 }
+                if (snake.vehicle.exists) {
+                    carField.setText("Car Coord: \n");
+                    carField.append("\n x1: " + snake.vehicle.x1);
+                    carField.append("\n x2: " + snake.vehicle.x2);
+                    carField.append("\n y1: " + snake.vehicle.y1);
+                    carField.append("\n y2: " + snake.vehicle.y2);
+                }
 
             }
         });
         timer.start();
-        setLocation(700,100);
+        setLocation(700, 100);
         setVisible(true);
 
 
@@ -64,7 +74,7 @@ public class TesterWindow extends JFrame implements ActionListener, Observer {
     public static void main(String[] args) {
         World world = new World();
         GameWindow game = new GameWindow(world);
-        TesterWindow test = new TesterWindow(game,game.snakeFrame,world);
+        TesterWindow test = new TesterWindow(game, game.snakeFrame, world);
     }
 
     public void update(KeyEvent e) {
@@ -85,7 +95,7 @@ public class TesterWindow extends JFrame implements ActionListener, Observer {
         }
         if (e.getKeyCode() == KeyEvent.VK_4) {
             //FILL SNAKE
-            for(int i = snake.snakeLength; i<snake.SNAKELIMIT; i++){
+            for (int i = snake.snakeLength; i < snake.SNAKELIMIT; i++) {
                 snake.growSnake();
             }
         }
@@ -102,6 +112,7 @@ public class TesterWindow extends JFrame implements ActionListener, Observer {
             snake.vehicle.x = 12;
             snake.vehicle.y = 12;
             snake.vehicle.exists = true;
+            snake.vehicle.update();
             snake.vehicle.left = false;
             snake.vehicle.right = false;
 

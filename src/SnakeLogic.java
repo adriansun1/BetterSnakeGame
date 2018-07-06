@@ -169,6 +169,7 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
                 if (x == snakeX[i] && y == snakeY[i]) {
                     return false;
                 }
+
             }
             return true;
         }
@@ -253,11 +254,14 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
     }
 
 
+    int endGameInt;
     private void endGame() {
-        System.out.println("game over");
+        endGameInt++;
+        System.out.println("game over" + endGameInt );
     }
 
 
+    @SuppressWarnings("Duplicates")
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
@@ -321,22 +325,31 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
         //paint vacuum
         if (vehicle.exists) {
             if (vehicle.isVac) {
-                if(vehicle.left){
-                    g.drawImage(vacuum, vehicle.calc(vehicle.x)+100, vehicle.calc(vehicle.y),vehicle.calc(vehicle.x),vehicle.calc(vehicle.y)+70,0,0,100,70, this);
-                }
-                if(vehicle.right){
-                    g.drawImage(vacuum, vehicle.calc(vehicle.x), vehicle.calc(vehicle.y),vehicle.calc(vehicle.x)+100,vehicle.calc(vehicle.y)+70,0,0,100,70, this);
+                if (vehicle.left) {
+                    vehicle.update();
+                    g.drawImage(vacuum, vehicle.x2, vehicle.y1, vehicle.x1, vehicle.y2, 0, 0, 100, 70, this);
+                } else if (vehicle.right) {
+                    vehicle.update();
+                    g.drawImage(vacuum, vehicle.x1, vehicle.y1, vehicle.x2, vehicle.y2, 0, 0, 100, 70, this);
+                } else {
+                    vehicle.update();
+                    g.drawImage(vacuum, vehicle.x1, vehicle.y1, vehicle.x2, vehicle.y2, 0, 0, 100, 70, this);
                 }
             } else {
-                if(vehicle.left){
-                    g.drawImage(car, vehicle.calc(vehicle.x)+100, vehicle.calc(vehicle.y),vehicle.calc(vehicle.x),vehicle.calc(vehicle.y)+70,0,0,100,70, this);
-                }
-                if(vehicle.right){
-                    g.drawImage(car, vehicle.calc(vehicle.x), vehicle.calc(vehicle.y),vehicle.calc(vehicle.x)+100,vehicle.calc(vehicle.y)+70,0,0,100,70, this);
+                if (vehicle.left) {
+                    vehicle.update();
+                    g.drawImage(car, vehicle.x2, vehicle.y1, vehicle.x1, vehicle.y2, 0, 0, 100, 70, this);
+                } else if (vehicle.right) {
+                    vehicle.update();
+                    g.drawImage(car, vehicle.x1, vehicle.y1, vehicle.x2, vehicle.y2, 0, 0, 100, 70, this);
+                } else {
+                    vehicle.update();
+                    g.drawImage(car, vehicle.x1, vehicle.y1, vehicle.x2, vehicle.y2, 0, 0, 100, 70, this);
                 }
             }
         }
     }
+
 
     @Override
     @SuppressWarnings("Duplicates")
@@ -436,13 +449,25 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
             carDelayTime = 0;
         }
 
+        //car movement
         if (vehicle.left) {
             vehicle.x--;
         } else if (vehicle.right) {
             vehicle.x++;
         }
-        if (vehicle.exists && (vehicle.x == vehicle.spawn2 || vehicle.x == vehicle.spawn1)) {
-            vehicle.despawn();
+
+        //car despawn and hitboxing
+        if (vehicle.exists) {
+            if (vehicle.x == vehicle.spawn2 || vehicle.x == vehicle.spawn1) {
+                vehicle.despawn();
+            }
+            for (int snakeUnit = 0; snakeUnit < snakeLength; snakeUnit++) {
+                if (calc('x',snakeUnit)>= vehicle.x1 && calc('x', snakeUnit) < vehicle.x2) {
+                    if (calc('y',snakeUnit) >= vehicle.y1 && calc('y',snakeUnit) < vehicle.y2) {
+                        endGame();
+                    }
+                }
+            }
         }
 
 
