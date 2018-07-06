@@ -54,6 +54,7 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
     protected final int ROCKLIMIT = 8;
     protected int[] rockX = new int[ROCKLIMIT];
     protected int[] rockY = new int[ROCKLIMIT];
+    protected int[] rockType = new int [ROCKLIMIT];
 
     //snake movement and facing direction
     private boolean north = false;
@@ -139,7 +140,8 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
                     do {
                         rockX[i] = Math.abs(rand.nextInt() % 26);
                         rockY[i] = Math.abs(rand.nextInt() % 26);
-                    } while ((rockY[i] < 16 && rockY[i] > 9));
+                        rockType[i] = Math.abs(rand.nextInt()%3);
+                    } while ((rockY[i] < 18 && rockY[i] > 7));
                 }
                 break;
 //                case 1: MovingMachine vehicle = new Vacuum(this);
@@ -369,14 +371,13 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
 
         //paints rocks
         for (int i = 0; i < ROCKLIMIT; i++) {
-            g.drawImage(randRock(), rockX[i]*25, rockY[i]*25, this);
+            g.drawImage(randRock(rockType[i]), rockX[i]*25-5, rockY[i]*25-10, this);
             System.out.println("paitn");
         }
 
     }
 
-    private Image randRock() {
-        int rock = Math.abs(rand.nextInt() % 3);
+    private Image randRock(int rock) {
         switch (rock) {
             case 0:
                 return rock1;
