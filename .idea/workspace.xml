@@ -2,12 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f84cca03-cf80-4f38-8b5f-7354424d1d0f" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/out/production/BetterPrettySnake/MovingMachine.class" afterPath="$PROJECT_DIR$/out/production/BetterPrettySnake/MovingMachine.class" />
-      <change beforePath="$PROJECT_DIR$/out/production/BetterPrettySnake/SnakeLogic.class" afterPath="$PROJECT_DIR$/out/production/BetterPrettySnake/SnakeLogic.class" />
-      <change beforePath="$PROJECT_DIR$/src/MovingMachine.java" afterPath="$PROJECT_DIR$/src/MovingMachine.java" />
+      <change beforePath="$PROJECT_DIR$/out/production/BetterPrettySnake/SnakeLogic.class" afterPath="" />
       <change beforePath="$PROJECT_DIR$/src/SnakeLogic.java" afterPath="$PROJECT_DIR$/src/SnakeLogic.java" />
-      <change beforePath="$PROJECT_DIR$/src/TesterWindow.java" afterPath="$PROJECT_DIR$/src/TesterWindow.java" />
+      <change beforePath="$PROJECT_DIR$/src/assets/car.png" afterPath="$PROJECT_DIR$/src/assets/car.png" />
+      <change beforePath="$PROJECT_DIR$/src/assets/orig/car.pixil" afterPath="$PROJECT_DIR$/src/assets/orig/car.pixil" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -91,12 +89,12 @@
       <file leaf-file-name="SnakeLogic.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/SnakeLogic.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5610">
-              <caret line="458" column="35" lean-forward="false" selection-start-line="458" selection-start-column="35" selection-end-line="458" selection-end-column="35" />
+            <state relative-caret-position="306">
+              <caret line="54" column="46" lean-forward="false" selection-start-line="54" selection-start-column="46" selection-end-line="54" selection-end-column="46" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#8555#8586#0" expanded="true" />
-                <element signature="e#11854#11885#0" expanded="true" />
+                <element signature="e#9277#9308#0" expanded="true" />
+                <element signature="e#13063#13094#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -181,8 +179,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="247" />
-    <option name="y" value="134" />
+    <option name="x" value="250" />
+    <option name="y" value="71" />
     <option name="width" value="794" />
     <option name="height" value="849" />
   </component>
@@ -359,26 +357,25 @@
       <option name="presentableId" value="Default" />
       <updated>1529979210106</updated>
       <workItem from="1529979213279" duration="43276000" />
-      <workItem from="1530561071491" duration="32932000" />
+      <workItem from="1530561071491" duration="35855000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="76208000" />
+    <option name="totallyTimeSpent" value="79131000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="247" y="134" width="794" height="849" extended-state="0" />
-    <editor active="true" />
+    <frame x="250" y="71" width="794" height="849" extended-state="0" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32746956" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32744566" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32880434" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32880434" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -473,8 +470,8 @@
           <caret line="73" column="5" lean-forward="true" selection-start-line="73" selection-start-column="5" selection-end-line="73" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#8555#8586#0" expanded="true" />
-            <element signature="e#11854#11885#0" expanded="true" />
+            <element signature="e#9277#9308#0" expanded="true" />
+            <element signature="e#13063#13094#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -563,16 +560,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/TesterWindow.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="115" column="32" lean-forward="false" selection-start-line="115" selection-start-column="32" selection-end-line="115" selection-end-column="32" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/GameWindow.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="149">
@@ -583,14 +570,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/SnakeLogic.java">
+    <entry file="file://$PROJECT_DIR$/src/TesterWindow.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5610">
-          <caret line="458" column="35" lean-forward="false" selection-start-line="458" selection-start-column="35" selection-end-line="458" selection-end-column="35" />
+        <state relative-caret-position="255">
+          <caret line="115" column="32" lean-forward="false" selection-start-line="115" selection-start-column="32" selection-end-line="115" selection-end-column="32" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#8555#8586#0" expanded="true" />
-            <element signature="e#11854#11885#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/SnakeLogic.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="54" column="46" lean-forward="false" selection-start-line="54" selection-start-column="46" selection-end-line="54" selection-end-column="46" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#9277#9308#0" expanded="true" />
+            <element signature="e#13063#13094#0" expanded="true" />
           </folding>
         </state>
       </provider>

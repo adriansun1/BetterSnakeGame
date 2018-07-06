@@ -49,8 +49,11 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
     protected int carWarningTime = 120;
     protected boolean carWarning = false;
     protected int leftOrRight;
-    protected int[] carHitboxX = new int[8];
-    protected int[] carHitboxY = new int[8];
+
+    //rock spawn and limit
+    protected final int ROCKLIMIT = 8;
+    protected int[] rockX = new int[ROCKLIMIT];
+    protected int[] rockY = new int[ROCKLIMIT];
 
     //snake movement and facing direction
     private boolean north = false;
@@ -79,6 +82,9 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
     private BufferedImage vacuum;
     private BufferedImage car;
     private BufferedImage deathSign;
+    private BufferedImage rock1;
+    private BufferedImage rock2;
+    private BufferedImage rock3;
 
     public SnakeLogic(World world) {
         setFocusable(true);
@@ -109,6 +115,10 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
             car = ImageIO.read(new File(filePath + "car.png"));
             vacuum = ImageIO.read(new File(filePath + "vacuum.png"));
             deathSign = ImageIO.read(new File(filePath + "deathSign.png"));
+            rock1 = ImageIO.read(new File(filePath + "rock1.png"));
+            rock2 = ImageIO.read(new File(filePath + "rock2.png"));
+            rock3 = ImageIO.read(new File(filePath + "rock3.png"));
+
 
         } catch (IOException ex) {
             this.setBackground(Color.BLACK);
@@ -119,15 +129,22 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
         timer.start();
         Arrays.fill(mouseMoveState, false);
 
-        // instantiate vehicle
+        // instantiate vehicle, also makes it so that the rocks dont spawn in path
         // if Kitchen
         int n = 0;
         switch (n) {
             case 0:
                 vehicle = new Car(this);
+                for (int i = 0; i < ROCKLIMIT; i++) {
+                    do {
+                        rockX[i] = Math.abs(rand.nextInt() % 26);
+                        rockY[i] = Math.abs(rand.nextInt() % 26);
+                    } while ((rockY[i] < 16 && rockY[i] > 9));
+                }
                 break;
 //                case 1: MovingMachine vehicle = new Vacuum(this);
         }
+
     }
 
     //multiplies x,y coords in order for painting
@@ -255,9 +272,10 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
 
 
     int endGameInt;
+
     private void endGame() {
         endGameInt++;
-        System.out.println("game over" + endGameInt );
+        System.out.println("game over" + endGameInt);
     }
 
 
@@ -275,9 +293,9 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
             snakeX[1] = 5;
             snakeX[2] = 4;
 
-            snakeY[0] = 4;
-            snakeY[1] = 4;
-            snakeY[2] = 4;
+            snakeY[0] = 10;
+            snakeY[1] = 10;
+            snakeY[2] = 10;
             east = true;
         }
 
@@ -348,6 +366,26 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
                 }
             }
         }
+
+        //paints rocks
+        for (int i = 0; i < ROCKLIMIT; i++) {
+            g.drawImage(randRock(), rockX[i]*25, rockY[i]*25, this);
+            System.out.println("paitn");
+        }
+
+    }
+
+    private Image randRock() {
+        int rock = Math.abs(rand.nextInt() % 3);
+        switch (rock) {
+            case 0:
+                return rock1;
+            case 1:
+                return rock2;
+            case 2:
+                return rock3;
+        }
+        return rock1;
     }
 
 
@@ -462,8 +500,8 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
                 vehicle.despawn();
             }
             for (int snakeUnit = 0; snakeUnit < snakeLength; snakeUnit++) {
-                if (calc('x',snakeUnit)>= vehicle.x1 && calc('x', snakeUnit) < vehicle.x2) {
-                    if (calc('y',snakeUnit) >= vehicle.y1 && calc('y',snakeUnit) < vehicle.y2) {
+                if (calc('x', snakeUnit) >= vehicle.x1 && calc('x', snakeUnit) < vehicle.x2) {
+                    if (calc('y', snakeUnit) >= vehicle.y1 && calc('y', snakeUnit) < vehicle.y2) {
                         endGame();
                     }
                 }
