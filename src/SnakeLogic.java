@@ -20,13 +20,14 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
     private boolean isItAWin = false;
     //[delay] changes update speed. default is 100.
     protected int delay = 100;
-    private long mouseTime = 0;
     MovingMachine vehicle;
     Random rand = new Random();
+    private int endGameInt;
+    private World world;
 
     //snake and mouse coordinates and hard limits
     protected final int MOUSELIMIT = 8;
-    protected final int SNAKELIMIT = 50;
+    protected final int SNAKELIMIT = 80;
     protected int[] snakeX = new int[SNAKELIMIT];
     protected int[] snakeY = new int[SNAKELIMIT];
     protected ArrayList<Integer> mouseX = new ArrayList<>();
@@ -36,8 +37,8 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
     protected boolean[] mouseMoveState = new boolean[MOUSELIMIT];
 
     //mouse spawn and move numbers
-    //[mouseDelay] changes rate that the mice spawn and move, delay will be [mouseDelay]*[mouseTime]. default is 20.
-    private int mouseDelay = 20;
+    //[mouseDelay] changes rate that the mice spawn and move, delay will be [mouseDelay]*[delay]. default is 20.
+    private int mouseDelay = 10;
     private int mouseDelayTime = 0;
     private int mouseSpawnPercentage = 50;
     private int mouseMovePercentage = 50;
@@ -54,7 +55,7 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
     protected final int ROCKLIMIT = 8;
     protected int[] rockX = new int[ROCKLIMIT];
     protected int[] rockY = new int[ROCKLIMIT];
-    protected int[] rockType = new int [ROCKLIMIT];
+    protected int[] rockType = new int[ROCKLIMIT];
 
     //snake movement and facing direction
     private boolean north = false;
@@ -90,6 +91,7 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
     public SnakeLogic(World world) {
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
+        this.world = world;
         world.addObserver(this);
         this.addKeyListener(world);
         initBoard();
@@ -140,7 +142,7 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
                     do {
                         rockX[i] = Math.abs(rand.nextInt() % 26);
                         rockY[i] = Math.abs(rand.nextInt() % 26);
-                        rockType[i] = Math.abs(rand.nextInt()%3);
+                        rockType[i] = Math.abs(rand.nextInt() %4);
                     } while ((rockY[i] < 18 && rockY[i] > 7));
                 }
                 break;
@@ -149,7 +151,7 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
 
     }
 
-    //multiplies x,y coords in order for painting
+    //multiplies x,y coords by 25 in order for painting
     protected int calc(char x, int i) {
         // for snake: x,y
         //for mouse: m,n
@@ -181,11 +183,13 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
         snakeX[i] = snakeX[i - 1];
     }
 
-    //if spot is not occupied by snake or boundaries or car
     private boolean spotIsValid(int x, int y) {
         if (x > -2 && x < 27 && y > -2 && y < 26) {
             for (int i = 0; i < snakeLength; i++) {
                 if (x == snakeX[i] && y == snakeY[i]) {
+                    return false;
+                }
+                if (rockAtLocation(x, y)) {
                     return false;
                 }
 
@@ -195,7 +199,6 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
         return false;
     }
 
-    //check spot is not occupied by mouse
     private boolean mouseSpotIsValid(int x, int y) {
         if (spotIsValid(x, y)) {
             for (int i = 0; i < mouseNum; i++) {
@@ -272,57 +275,28 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
         snakeLength++;
     }
 
-
-    int endGameInt;
-
-    private void endGame() {
-        endGameInt++;
-        System.out.println("game over" + endGameInt);
+    protected boolean rockAtLocation(int x, int y) {
+        for (int i = 0; i < ROCKLIMIT; i++) {
+            if (x == rockX[i] && y == rockY[i]) {
+                return true;
+            }
+        }
+        return false;
     }
 
 
-    @SuppressWarnings("Duplicates")
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
+    private void initPaint() {
+        snakeX[0] = 6;
+        snakeX[1] = 5;
+        snakeX[2] = 4;
 
-        //draws bg depending on the number called
-        //NEEDS UPDATING
-        g.drawImage(bgGrass, 0, 0, this);
+        snakeY[0] = 10;
+        snakeY[1] = 10;
+        snakeY[2] = 10;
+        east = true;
+    }
 
-        //paints initial snake position
-        if (moves == 0) {
-            snakeX[0] = 6;
-            snakeX[1] = 5;
-            snakeX[2] = 4;
-
-            snakeY[0] = 10;
-            snakeY[1] = 10;
-            snakeY[2] = 10;
-            east = true;
-        }
-
-        //paints snake head and body
-        for (int i = 0; i < snakeLength; i++) {
-            if (i == 0) {
-                if (north) {
-                    g.drawImage(northMouth, calc('x', i), calc('y', i), this);
-                }
-                if (east) {
-                    g.drawImage(eastMouth, calc('x', i), calc('y', i), this);
-                }
-                if (west) {
-                    g.drawImage(westMouth, calc('x', i), calc('y', i), this);
-                }
-                if (south) {
-                    g.drawImage(southMouth, calc('x', i), calc('y', i), this);
-                }
-            }
-            if (i != 0) {
-                g.drawImage(snakeBody, calc('x', i), calc('y', i), this);
-            }
-        }
-
-        //paints mice
+    private void mousePaint(Graphics g) {
         for (int i = 0; i < mouseNum; i++) {
             if (mouseMoveState[i] == true) {
                 g.drawImage(mouseMove, calc('m', i), calc('n', i), this);
@@ -331,7 +305,9 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
             }
         }
 
-        //paints warning sign
+    }
+
+    private void warningSignPaint(Graphics g) {
         if (carWarning) {
             if (leftOrRight == 1) {
                 g.drawImage(deathSign, vehicle.calc(4), vehicle.calc(12), vehicle.calc(6), vehicle.calc(14), 0, 0, 32, 32, this);
@@ -339,10 +315,9 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
                 g.drawImage(deathSign, vehicle.calc(24), vehicle.calc(12), vehicle.calc(22), vehicle.calc(14), 0, 0, 32, 32, this);
             }
         }
+    }
 
-        //paints car/vacuum
-        //if(background is kitchen)
-        //paint vacuum
+    private void vehiclePaint(Graphics g) {
         if (vehicle.exists) {
             if (vehicle.isVac) {
                 if (vehicle.left) {
@@ -369,26 +344,75 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
             }
         }
 
-        //paints rocks
+    }
+
+    private void rockPaint(Graphics g) {
         for (int i = 0; i < ROCKLIMIT; i++) {
-            g.drawImage(randRock(rockType[i]), rockX[i]*25-5, rockY[i]*25-10, this);
-            System.out.println("paitn");
+            g.drawImage(randRock(rockType[i]), (rockX[i] * 25) + 20, (rockY[i] * 25) + 20, this);
         }
 
     }
 
+
     private Image randRock(int rock) {
         switch (rock) {
-            case 0:
+            default:
                 return rock1;
             case 1:
                 return rock2;
             case 2:
                 return rock3;
         }
-        return rock1;
     }
 
+
+    private void endGame() {
+        snakeX[0] = 6;
+        snakeY[0] = 10;
+        stopMovement();
+        vehicle.despawn();
+        carDelayTime = -2;
+        setVisible(false);
+        ExitWindow exit = new ExitWindow(this, world);
+    }
+
+
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        //draws bg depending on the number called
+        //NEEDS UPDATING
+        g.drawImage(bgGrass, 0, 0, this);
+
+        //paints initial snake position
+        if (moves == 0) {
+            initPaint();
+        }
+
+        for (int i = 0; i < snakeLength; i++) {
+            if (i == 0) {
+                if (north) {
+                    g.drawImage(northMouth, calc('x', i), calc('y', i), this);
+                }
+                if (east) {
+                    g.drawImage(eastMouth, calc('x', i), calc('y', i), this);
+                }
+                if (west) {
+                    g.drawImage(westMouth, calc('x', i), calc('y', i), this);
+                }
+                if (south) {
+                    g.drawImage(southMouth, calc('x', i), calc('y', i), this);
+                }
+            }
+            if (i != 0) {
+                g.drawImage(snakeBody, calc('x', i), calc('y', i), this);
+            }
+        }
+        mousePaint(g);
+        warningSignPaint(g);
+        vehiclePaint(g);
+        rockPaint(g);
+    }
 
     @Override
     @SuppressWarnings("Duplicates")
@@ -435,7 +459,6 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
             }
         }
 
-        //eating behavior
         if (mouseX.contains(snakeX[0])) {
             for (int i = 0; i < mouseNum; i++) {
                 if (mouseX.get(i) == snakeX[0] && mouseY.get(i) == snakeY[0]) {
@@ -466,7 +489,9 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
 
         //car behavior
 
-        carDelayTime++;
+        if (carDelayTime > -1) {
+            carDelayTime++;
+        }
         if (carDelayTime == carWarningTime) {
             leftOrRight = Math.abs(rand.nextInt() % 2);
         }

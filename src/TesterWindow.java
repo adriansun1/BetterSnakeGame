@@ -54,8 +54,13 @@ public class TesterWindow extends JFrame implements ActionListener, Observer {
                 for (int i = 0; i < snake.mouseNum; i++) {
                     coordField.append("Mouse" + (i + 1) + ": (" + snake.mouseX.get(i) + ", " + snake.mouseY.get(i) + ")\n");
                 }
+
+                carField.setText("Rock: \n");
+                for (int i = 0; i < snake.ROCKLIMIT; i++) {
+                    carField.append("Rock" + (i+1) + "( " + snake.rockX[i] + ", " + snake.rockY[i] + ")\n");
+                }
                 if (snake.vehicle.exists) {
-                    carField.setText("Car Coord: \n");
+                    carField.append("Car: ");
                     carField.append("\n x1: " + snake.vehicle.x1);
                     carField.append("\n x2: " + snake.vehicle.x2);
                     carField.append("\n y1: " + snake.vehicle.y1);
