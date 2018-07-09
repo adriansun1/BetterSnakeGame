@@ -23,11 +23,12 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
     MovingMachine vehicle;
     Random rand = new Random();
     private int endGameInt;
-    private World world;
+    protected World world;
+    protected GameWindow game;
 
     //snake and mouse coordinates and hard limits
     protected final int MOUSELIMIT = 8;
-    protected final int SNAKELIMIT = 80;
+    protected final int SNAKELIMIT = 300;
     protected int[] snakeX = new int[SNAKELIMIT];
     protected int[] snakeY = new int[SNAKELIMIT];
     protected ArrayList<Integer> mouseX = new ArrayList<>();
@@ -88,10 +89,11 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
     private BufferedImage rock2;
     private BufferedImage rock3;
 
-    public SnakeLogic(World world) {
+    public SnakeLogic(World world, GameWindow game) {
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
         this.world = world;
+        this.game = game;
         world.addObserver(this);
         this.addKeyListener(world);
         initBoard();
@@ -142,7 +144,7 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
                     do {
                         rockX[i] = Math.abs(rand.nextInt() % 26);
                         rockY[i] = Math.abs(rand.nextInt() % 26);
-                        rockType[i] = Math.abs(rand.nextInt() %4);
+                        rockType[i] = Math.abs(rand.nextInt() % 4);
                     } while ((rockY[i] < 18 && rockY[i] > 7));
                 }
                 break;
@@ -185,7 +187,7 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
 
     private boolean spotIsValid(int x, int y) {
         if (x > -2 && x < 27 && y > -2 && y < 26) {
-            for (int i = 0; i < snakeLength; i++) {
+            for (int i = 2; i < snakeLength; i++) {
                 if (x == snakeX[i] && y == snakeY[i]) {
                     return false;
                 }
@@ -367,13 +369,17 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
 
 
     private void endGame() {
-        snakeX[0] = 6;
-        snakeY[0] = 10;
+        Arrays.fill(snakeX,7);
+        Arrays.fill(snakeY,7);
+        snakeX[0] = 8;
+        snakeX[1] = 9;
+        snakeY[0] = 8;
+        snakeY[1] = 9;
         stopMovement();
         vehicle.despawn();
         carDelayTime = -2;
         setVisible(false);
-        ExitWindow exit = new ExitWindow(this, world);
+        ExitWindow exit = new ExitWindow(game, world);
     }
 
 
@@ -421,9 +427,6 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
         if (north) {
             for (int i = snakeLength - 1; i > -1; i--) {
                 if (i == 0) {
-                    if (!spotIsValid(snakeX[0], snakeY[0] - 1)) {
-                        endGame();
-                    }
                     snakeY[0]--;
                 } else bodyLocationUpdate(i);
             }
@@ -431,9 +434,6 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
         if (south) {
             for (int i = snakeLength - 1; i > -1; i--) {
                 if (i == 0) {
-                    if (!spotIsValid(snakeX[0], snakeY[0] + 1)) {
-                        endGame();
-                    }
                     snakeY[0]++;
                 } else bodyLocationUpdate(i);
             }
@@ -441,9 +441,6 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
         if (east) {
             for (int i = snakeLength - 1; i > -1; i--) {
                 if (i == 0) {
-                    if (!spotIsValid(snakeX[0] + 1, snakeY[0])) {
-                        endGame();
-                    }
                     snakeX[0]++;
                 } else bodyLocationUpdate(i);
             }
@@ -451,12 +448,13 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
         if (west) {
             for (int i = snakeLength - 1; i > -1; i--) {
                 if (i == 0) {
-                    if (!spotIsValid(snakeX[0] - 1, snakeY[0])) {
-                        endGame();
-                    }
                     snakeX[0]--;
                 } else bodyLocationUpdate(i);
             }
+        }
+
+        if (!spotIsValid(snakeX[1], snakeY[1]) && moves >0) {
+            endGame();
         }
 
         if (mouseX.contains(snakeX[0])) {

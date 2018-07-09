@@ -1,17 +1,18 @@
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 public class ExitWindow extends JFrame implements Observer {
 
-    private JPanel buttonPanel;
-    private JButton againButton;
     private JButton exitButton;
+    private JButton restartButton;
     private JTextField messageTextField;
 
-    ExitWindow(SnakeLogic snake, World world) {
-        initBoard(snake);
+    ExitWindow(GameWindow game, World world) {
+        initBoard(game);
         world.addObserver(this);
         this.addKeyListener(world);
 
@@ -19,7 +20,7 @@ public class ExitWindow extends JFrame implements Observer {
 
     //IN THE FUTURE
     //USE A TEMPLATE ABSTRACT FOR THIS
-    private void initBoard(SnakeLogic snake) {
+    private void initBoard(GameWindow game) {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("tanks for playin");
         setPreferredSize(new Dimension(400, 200));
@@ -29,16 +30,29 @@ public class ExitWindow extends JFrame implements Observer {
         Container c = getContentPane();
         c.setLayout(new BorderLayout());
 
-        buttonPanel = new JPanel();
-        c.add(buttonPanel, BorderLayout.SOUTH);
-        buttonPanel.setLayout(new BorderLayout());
+        exitButton = new JButton("EXIT");
+        c.add(exitButton, BorderLayout.SOUTH);
+        exitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                System.exit(0);
+            }
+        });
 
-        againButton = new JButton("AGAIN");
-        exitButton = new JButton("AGAIN");
-        buttonPanel.add(againButton, BorderLayout.WEST);
-        buttonPanel.add(exitButton, BorderLayout.EAST);
+        restartButton = new JButton("AGAIN");
+        c.add(restartButton, BorderLayout.EAST);
+        restartButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent actionEvent){
+                game.dispose();
+                World world = new World();
+                GameWindow game = new GameWindow(world);
 
-        messageTextField = new JTextField("THANKS FOR PLAYING. YOUR SCORE IS: " + snake.snakeLength);
+            }
+
+        });
+
+        messageTextField = new JTextField("THANKS FOR PLAYING. YOUR SCORE IS: " + game.snakeFrame.snakeLength);
         messageTextField.setEditable(false);
         c.add(messageTextField, BorderLayout.CENTER);
 

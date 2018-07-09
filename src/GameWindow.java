@@ -31,7 +31,7 @@ public class GameWindow extends JFrame implements Observer {
         Container c = getContentPane();
         c.setLayout(new BorderLayout());
 
-        snakeFrame = new SnakeLogic(world);
+        snakeFrame = new SnakeLogic(world,this);
         c.add(snakeFrame, BorderLayout.CENTER);
 
         //updates X,Y coords
