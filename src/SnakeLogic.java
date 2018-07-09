@@ -15,6 +15,11 @@ import java.util.TimerTask;
 public class SnakeLogic extends JPanel implements ActionListener, Observer {
 
 
+
+    //this will need to be changed to the correct path
+    String filePath = "C:\\Users\\Adrian\\Desktop\\Programming\\Github\\BetterPrettySnake\\BetterSnakeGame\\src\\assets\\";
+
+
     private Timer timer;
     private int moves = 0;
     private boolean isItAWin = false;
@@ -101,7 +106,6 @@ public class SnakeLogic extends JPanel implements ActionListener, Observer {
 
     private void initBoard() {
         try {
-            String filePath = "C:\\Users\\Adrian\\Desktop\\Programming\\Github\\BetterPrettySnake\\BetterSnakeGame\\src\\assets\\";
             bgGrass = ImageIO.read(new File(filePath + "bgGrass.png"));
 //            bgDesert = ImageIO.read(new File("C:\\Users\\Adrian\\Desktop\\Programming\\Github\\BetterPrettySnake\\BetterSnakeGame\\src\\assets\\bgDesert.png"));
 //            bgKitchen = ImageIO.read(new File("C:\\Users\\Adrian\\Desktop\\Programming\\Github\\BetterPrettySnake\\BetterSnakeGame\\src\\assets\\bgKitchen.png"));

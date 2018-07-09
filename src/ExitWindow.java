@@ -15,7 +15,7 @@ public class ExitWindow extends JFrame implements Observer {
         initBoard(game);
         world.addObserver(this);
         this.addKeyListener(world);
-
+        game.dispose();
     }
 
     //IN THE FUTURE
@@ -44,12 +44,10 @@ public class ExitWindow extends JFrame implements Observer {
         restartButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent actionEvent){
-                game.dispose();
                 World world = new World();
                 GameWindow game = new GameWindow(world);
-
+                dispose();
             }
-
         });
 
         messageTextField = new JTextField("THANKS FOR PLAYING. YOUR SCORE IS: " + game.snakeFrame.snakeLength);
